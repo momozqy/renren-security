@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="io.renren.dao.CtUserDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="io.renren.entity.CtUserEntity" id="ctUserMap">
+        <result property="userId" column="user_id"/>
+        <result property="userName" column="user_name"/>
+        <result property="password" column="password"/>
+        <result property="type" column="type"/>
+        <result property="status" column="status"/>
+        <result property="trueName" column="true_name"/>
+        <result property="nickname" column="nickname"/>
+        <result property="sex" column="sex"/>
+        <result property="age" column="age"/>
+        <result property="cardType" column="card_type"/>
+        <result property="cardNumber" column="card_number"/>
+        <result property="city" column="city"/>
+        <result property="pic" column="pic"/>
+        <result property="picSmall" column="pic_small"/>
+        <result property="tel" column="tel"/>
+        <result property="mobile" column="mobile"/>
+        <result property="regTime" column="reg_time"/>
+        <result property="activeTime" column="active_time"/>
+        <result property="remark" column="remark"/>
+        <result property="parentsLimit" column="parents_limit"/>
+        <result property="deviceId" column="device_id"/>
+        <result property="inviteCode" column="invite_code"/>
+        <result property="studentId" column="student_id"/>
+        <result property="level" column="level"/>
+        <result property="openId" column="open_id"/>
+    </resultMap>
+
+	<select id="queryObject" resultType="io.renren.entity.CtUserEntity">
+		select * from ct_user where user_id = #{value}
+	</select>
+
+	<select id="queryList" resultType="io.renren.entity.CtUserEntity">
+		select * from ct_user
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+			<otherwise>
+                order by user_id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="queryTotal" resultType="int">
+		select count(*) from ct_user 
+	</select>
+	 
+	<insert id="save" parameterType="io.renren.entity.CtUserEntity" useGeneratedKeys="true" keyProperty="userId">
+		insert into ct_user
+		(
+			`user_name`, 
+			`password`, 
+			`type`, 
+			`status`, 
+			`true_name`, 
+			`nickname`, 
+			`sex`, 
+			`age`, 
+			`card_type`, 
+			`card_number`, 
+			`city`, 
+			`pic`, 
+			`pic_small`, 
+			`tel`, 
+			`mobile`, 
+			`reg_time`, 
+			`active_time`, 
+			`remark`, 
+			`parents_limit`, 
+			`device_id`, 
+			`invite_code`, 
+			`student_id`, 
+			`level`, 
+			`open_id`
+		)
+		values
+		(
+			#{userName}, 
+			#{password}, 
+			#{type}, 
+			#{status}, 
+			#{trueName}, 
+			#{nickname}, 
+			#{sex}, 
+			#{age}, 
+			#{cardType}, 
+			#{cardNumber}, 
+			#{city}, 
+			#{pic}, 
+			#{picSmall}, 
+			#{tel}, 
+			#{mobile}, 
+			#{regTime}, 
+			#{activeTime}, 
+			#{remark}, 
+			#{parentsLimit}, 
+			#{deviceId}, 
+			#{inviteCode}, 
+			#{studentId}, 
+			#{level}, 
+			#{openId}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="io.renren.entity.CtUserEntity">
+		update ct_user 
+		<set>
+			<if test="userName != null">`user_name` = #{userName}, </if>
+			<if test="password != null">`password` = #{password}, </if>
+			<if test="type != null">`type` = #{type}, </if>
+			<if test="status != null">`status` = #{status}, </if>
+			<if test="trueName != null">`true_name` = #{trueName}, </if>
+			<if test="nickname != null">`nickname` = #{nickname}, </if>
+			<if test="sex != null">`sex` = #{sex}, </if>
+			<if test="age != null">`age` = #{age}, </if>
+			<if test="cardType != null">`card_type` = #{cardType}, </if>
+			<if test="cardNumber != null">`card_number` = #{cardNumber}, </if>
+			<if test="city != null">`city` = #{city}, </if>
+			<if test="pic != null">`pic` = #{pic}, </if>
+			<if test="picSmall != null">`pic_small` = #{picSmall}, </if>
+			<if test="tel != null">`tel` = #{tel}, </if>
+			<if test="mobile != null">`mobile` = #{mobile}, </if>
+			<if test="regTime != null">`reg_time` = #{regTime}, </if>
+			<if test="activeTime != null">`active_time` = #{activeTime}, </if>
+			<if test="remark != null">`remark` = #{remark}, </if>
+			<if test="parentsLimit != null">`parents_limit` = #{parentsLimit}, </if>
+			<if test="deviceId != null">`device_id` = #{deviceId}, </if>
+			<if test="inviteCode != null">`invite_code` = #{inviteCode}, </if>
+			<if test="studentId != null">`student_id` = #{studentId}, </if>
+			<if test="level != null">`level` = #{level}, </if>
+			<if test="openId != null">`open_id` = #{openId}</if>
+		</set>
+		where user_id = #{userId}
+	</update>
+	
+	<delete id="delete">
+		delete from ct_user where user_id = #{value}
+	</delete>
+	
+	<delete id="deleteBatch">
+		delete from ct_user where user_id in 
+		<foreach item="userId" collection="array" open="(" separator="," close=")">
+			#{userId}
+		</foreach>
+	</delete>
+
+</mapper>

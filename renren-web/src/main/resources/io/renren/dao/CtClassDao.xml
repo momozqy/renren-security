@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="io.renren.dao.CtClassDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="io.renren.entity.CtClassEntity" id="ctClassMap">
+        <result property="classId" column="class_id"/>
+        <result property="classType" column="class_type"/>
+        <result property="classVersion" column="class_version"/>
+        <result property="classNameCn" column="class_name_cn"/>
+        <result property="className" column="class_name"/>
+        <result property="classSummary" column="class_summary"/>
+        <result property="author" column="author"/>
+        <result property="frontcoverUrl" column="frontcover_url"/>
+        <result property="storageLocation" column="storage_location"/>
+        <result property="status" column="status"/>
+        <result property="sort" column="sort"/>
+        <result property="createdTime" column="created_time"/>
+        <result property="commentCount" column="comment_count"/>
+        <result property="keepCount" column="keep_count"/>
+        <result property="frontcoversmallUrl" column="frontcoversmall_url"/>
+        <result property="provider" column="provider"/>
+        <result property="kind" column="kind"/>
+        <result property="effectedTime" column="effected_time"/>
+        <result property="expiredTime" column="expired_time"/>
+        <result property="price" column="price"/>
+        <result property="preNote" column="pre_note"/>
+        <result property="midNote" column="mid_note"/>
+        <result property="aftNote" column="aft_note"/>
+        <result property="keyword" column="keyword"/>
+        <result property="age" column="age"/>
+        <result property="classLevel" column="class_level"/>
+        <result property="referTranslate" column="refer_translate"/>
+        <result property="cultureExpand" column="culture_expand"/>
+        <result property="engageLife" column="engage_life"/>
+        <result property="seriId" column="seri_id"/>
+        <result property="pressId" column="press_id"/>
+        <result property="mp3ZipUrl" column="mp3_zip_url"/>
+        <result property="picZipUrl" column="pic_zip_url"/>
+        <result property="megagame" column="megagame"/>
+        <result property="gradeId" column="grade_id"/>
+    </resultMap>
+
+	<select id="queryObject" resultType="io.renren.entity.CtClassEntity">
+		select * from ct_class where class_id = #{value}
+	</select>
+
+	<select id="queryList" resultType="io.renren.entity.CtClassEntity">
+		select * from ct_class
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+			<otherwise>
+                order by class_id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="queryTotal" resultType="int">
+		select count(*) from ct_class 
+	</select>
+	 
+	<insert id="save" parameterType="io.renren.entity.CtClassEntity" useGeneratedKeys="true" keyProperty="classId">
+		insert into ct_class
+		(
+			`class_type`, 
+			`class_version`, 
+			`class_name_cn`, 
+			`class_name`, 
+			`class_summary`, 
+			`author`, 
+			`frontcover_url`, 
+			`storage_location`, 
+			`status`, 
+			`sort`, 
+			`created_time`, 
+			`comment_count`, 
+			`keep_count`, 
+			`frontcoversmall_url`, 
+			`provider`, 
+			`kind`, 
+			`effected_time`, 
+			`expired_time`, 
+			`price`, 
+			`pre_note`, 
+			`mid_note`, 
+			`aft_note`, 
+			`keyword`, 
+			`age`, 
+			`class_level`, 
+			`refer_translate`, 
+			`culture_expand`, 
+			`engage_life`, 
+			`seri_id`, 
+			`press_id`, 
+			`mp3_zip_url`, 
+			`pic_zip_url`, 
+			`megagame`, 
+			`grade_id`
+		)
+		values
+		(
+			#{classType}, 
+			#{classVersion}, 
+			#{classNameCn}, 
+			#{className}, 
+			#{classSummary}, 
+			#{author}, 
+			#{frontcoverUrl}, 
+			#{storageLocation}, 
+			#{status}, 
+			#{sort}, 
+			#{createdTime}, 
+			#{commentCount}, 
+			#{keepCount}, 
+			#{frontcoversmallUrl}, 
+			#{provider}, 
+			#{kind}, 
+			#{effectedTime}, 
+			#{expiredTime}, 
+			#{price}, 
+			#{preNote}, 
+			#{midNote}, 
+			#{aftNote}, 
+			#{keyword}, 
+			#{age}, 
+			#{classLevel}, 
+			#{referTranslate}, 
+			#{cultureExpand}, 
+			#{engageLife}, 
+			#{seriId}, 
+			#{pressId}, 
+			#{mp3ZipUrl}, 
+			#{picZipUrl}, 
+			#{megagame}, 
+			#{gradeId}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="io.renren.entity.CtClassEntity">
+		update ct_class 
+		<set>
+			<if test="classType != null">`class_type` = #{classType}, </if>
+			<if test="classVersion != null">`class_version` = #{classVersion}, </if>
+			<if test="classNameCn != null">`class_name_cn` = #{classNameCn}, </if>
+			<if test="className != null">`class_name` = #{className}, </if>
+			<if test="classSummary != null">`class_summary` = #{classSummary}, </if>
+			<if test="author != null">`author` = #{author}, </if>
+			<if test="frontcoverUrl != null">`frontcover_url` = #{frontcoverUrl}, </if>
+			<if test="storageLocation != null">`storage_location` = #{storageLocation}, </if>
+			<if test="status != null">`status` = #{status}, </if>
+			<if test="sort != null">`sort` = #{sort}, </if>
+			<if test="createdTime != null">`created_time` = #{createdTime}, </if>
+			<if test="commentCount != null">`comment_count` = #{commentCount}, </if>
+			<if test="keepCount != null">`keep_count` = #{keepCount}, </if>
+			<if test="frontcoversmallUrl != null">`frontcoversmall_url` = #{frontcoversmallUrl}, </if>
+			<if test="provider != null">`provider` = #{provider}, </if>
+			<if test="kind != null">`kind` = #{kind}, </if>
+			<if test="effectedTime != null">`effected_time` = #{effectedTime}, </if>
+			<if test="expiredTime != null">`expired_time` = #{expiredTime}, </if>
+			<if test="price != null">`price` = #{price}, </if>
+			<if test="preNote != null">`pre_note` = #{preNote}, </if>
+			<if test="midNote != null">`mid_note` = #{midNote}, </if>
+			<if test="aftNote != null">`aft_note` = #{aftNote}, </if>
+			<if test="keyword != null">`keyword` = #{keyword}, </if>
+			<if test="age != null">`age` = #{age}, </if>
+			<if test="classLevel != null">`class_level` = #{classLevel}, </if>
+			<if test="referTranslate != null">`refer_translate` = #{referTranslate}, </if>
+			<if test="cultureExpand != null">`culture_expand` = #{cultureExpand}, </if>
+			<if test="engageLife != null">`engage_life` = #{engageLife}, </if>
+			<if test="seriId != null">`seri_id` = #{seriId}, </if>
+			<if test="pressId != null">`press_id` = #{pressId}, </if>
+			<if test="mp3ZipUrl != null">`mp3_zip_url` = #{mp3ZipUrl}, </if>
+			<if test="picZipUrl != null">`pic_zip_url` = #{picZipUrl}, </if>
+			<if test="megagame != null">`megagame` = #{megagame}, </if>
+			<if test="gradeId != null">`grade_id` = #{gradeId}</if>
+		</set>
+		where class_id = #{classId}
+	</update>
+	
+	<delete id="delete">
+		delete from ct_class where class_id = #{value}
+	</delete>
+	
+	<delete id="deleteBatch">
+		delete from ct_class where class_id in 
+		<foreach item="classId" collection="array" open="(" separator="," close=")">
+			#{classId}
+		</foreach>
+	</delete>
+
+</mapper>

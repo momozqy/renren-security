@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="io.renren.dao.CtSeriDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="io.renren.entity.CtSeriEntity" id="ctSeriMap">
+        <result property="seriId" column="seri_id"/>
+        <result property="seriName" column="seri_name"/>
+    </resultMap>
+
+	<select id="queryObject" resultType="io.renren.entity.CtSeriEntity">
+		select * from ct_seri where seri_id = #{value}
+	</select>
+
+	<select id="queryList" resultType="io.renren.entity.CtSeriEntity">
+		select * from ct_seri
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+			<otherwise>
+                order by seri_id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="queryTotal" resultType="int">
+		select count(*) from ct_seri 
+	</select>
+	 
+	<insert id="save" parameterType="io.renren.entity.CtSeriEntity" useGeneratedKeys="true" keyProperty="seriId">
+		insert into ct_seri
+		(
+			`seri_name`
+		)
+		values
+		(
+			#{seriName}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="io.renren.entity.CtSeriEntity">
+		update ct_seri 
+		<set>
+			<if test="seriName != null">`seri_name` = #{seriName}</if>
+		</set>
+		where seri_id = #{seriId}
+	</update>
+	
+	<delete id="delete">
+		delete from ct_seri where seri_id = #{value}
+	</delete>
+	
+	<delete id="deleteBatch">
+		delete from ct_seri where seri_id in 
+		<foreach item="seriId" collection="array" open="(" separator="," close=")">
+			#{seriId}
+		</foreach>
+	</delete>
+
+</mapper>
