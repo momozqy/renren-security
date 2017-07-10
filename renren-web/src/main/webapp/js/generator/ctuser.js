@@ -3,41 +3,11 @@ $(function () {
         url: '../ctuser/list',
         datatype: "json",
         colModel: [			
-			{ label: 'userId', name: 'userId', index: 'user_id', width: 50, key: true },
-			{ label: '', name: 'userName', index: 'user_name', width: 80 }, 			
-			{ label: '', name: 'password', index: 'password', width: 80 }, 			
-			{ label: '1 普通用户
-            2 付费用户
-            4 学校用户', name: 'type', index: 'type', width: 80 }, 			
-			{ label: '0：未激活
-            1：激活
-            默认为未激活', name: 'status', index: 'status', width: 80 }, 			
-			{ label: '', name: 'trueName', index: 'true_name', width: 80 }, 			
-			{ label: '', name: 'nickname', index: 'nickname', width: 80 }, 			
-			{ label: '0：男
-            1：女', name: 'sex', index: 'sex', width: 80 }, 			
-			{ label: '', name: 'age', index: 'age', width: 80 }, 			
-			{ label: '0：身份证
-            1：军官证
-            2：学生证
-            3：车本', name: 'cardType', index: 'card_type', width: 80 }, 			
-			{ label: '', name: 'cardNumber', index: 'card_number', width: 80 }, 			
-			{ label: '', name: 'city', index: 'city', width: 80 }, 			
-			{ label: '', name: 'pic', index: 'pic', width: 80 }, 			
-			{ label: '', name: 'picSmall', index: 'pic_small', width: 80 }, 			
-			{ label: '', name: 'tel', index: 'tel', width: 80 }, 			
-			{ label: '', name: 'mobile', index: 'mobile', width: 80 }, 			
-			{ label: '', name: 'regTime', index: 'reg_time', width: 80 }, 			
-			{ label: '', name: 'activeTime', index: 'active_time', width: 80 }, 			
-			{ label: '', name: 'remark', index: 'remark', width: 80 }, 			
-			{ label: '家长限制
-            0：无限制
-            ', name: 'parentsLimit', index: 'parents_limit', width: 80 }, 			
-			{ label: '', name: 'deviceId', index: 'device_id', width: 80 }, 			
-			{ label: '', name: 'inviteCode', index: 'invite_code', width: 80 }, 			
-			{ label: '', name: 'studentId', index: 'student_id', width: 80 }, 			
-			{ label: '', name: 'level', index: 'level', width: 80 }, 			
-			{ label: '', name: 'openId', index: 'open_id', width: 80 }			
+			{ label: '用户Id', name: 'userId', index: 'user_id', width: 50, key: true },
+			{ label: '用户名', name: 'userName', index: 'user_name', width: 80 },
+			{ label: '昵称', name: 'nickname', index: 'nickname', width: 80 },
+			{ label: '手机号', name: 'mobile', index: 'mobile', width: 80 },
+			{ label: '注册时间', name: 'regTime', index: 'reg_time', width: 80 }
         ],
 		viewrecords: true,
         height: 385,

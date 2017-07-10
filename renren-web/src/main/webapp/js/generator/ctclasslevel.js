@@ -4,8 +4,8 @@ $(function () {
         datatype: "json",
         colModel: [			
 			{ label: 'id', name: 'id', index: 'id', width: 50, key: true },
-			{ label: '', name: 'levelCode', index: 'level_code', width: 80 }, 			
-			{ label: '', name: 'levelDesc', index: 'level_desc', width: 80 }			
+			{ label: '等级', name: 'levelCode', index: 'level_code', width: 80 },
+			{ label: '等级描述', name: 'levelDesc', index: 'level_desc', width: 80 }
         ],
 		viewrecords: true,
         height: 385,

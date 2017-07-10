@@ -3,7 +3,7 @@ $(function () {
         url: '../ctseri/list',
         datatype: "json",
         colModel: [			
-			{ label: 'seriId', name: 'seriId', index: 'seri_id', width: 50, key: true },
+			{ label: '系列Id', name: 'seriId', index: 'seri_id', width: 50, key: true },
 			{ label: '系列名字', name: 'seriName', index: 'seri_name', width: 80 }			
         ],
 		viewrecords: true,

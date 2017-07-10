@@ -4,8 +4,7 @@ $(function () {
         datatype: "json",
         colModel: [			
 			{ label: 'id', name: 'id', index: 'id', width: 50, key: true },
-			{ label: '', name: 'pressCode', index: 'press_code', width: 80 }, 			
-			{ label: '', name: 'pressName', index: 'press_name', width: 80 }			
+			{ label: '出版社名字', name: 'pressName', index: 'press_name', width: 80 }
         ],
 		viewrecords: true,
         height: 385,
