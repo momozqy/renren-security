@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="io.renren.dao.CtGradeDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="io.renren.entity.CtGradeEntity" id="ctGradeMap">
+        <result property="id" column="id"/>
+        <result property="gradeId" column="grade_id"/>
+        <result property="gradeName" column="grade_name"/>
+    </resultMap>
+
+	<select id="queryObject" resultType="io.renren.entity.CtGradeEntity">
+		select * from ct_grade where id = #{value}
+	</select>
+
+	<select id="queryList" resultType="io.renren.entity.CtGradeEntity">
+		select * from ct_grade
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+			<otherwise>
+                order by id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="queryTotal" resultType="int">
+		select count(*) from ct_grade 
+	</select>
+	 
+	<insert id="save" parameterType="io.renren.entity.CtGradeEntity" useGeneratedKeys="true" keyProperty="id">
+		insert into ct_grade
+		(
+			`grade_id`, 
+			`grade_name`
+		)
+		values
+		(
+			#{gradeId}, 
+			#{gradeName}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="io.renren.entity.CtGradeEntity">
+		update ct_grade 
+		<set>
+			<if test="gradeId != null">`grade_id` = #{gradeId}, </if>
+			<if test="gradeName != null">`grade_name` = #{gradeName}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="delete">
+		delete from ct_grade where id = #{value}
+	</delete>
+	
+	<delete id="deleteBatch">
+		delete from ct_grade where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

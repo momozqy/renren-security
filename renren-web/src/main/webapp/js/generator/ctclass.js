@@ -6,12 +6,12 @@ $(function () {
         url: '../ctclass/list',
         datatype: "json",
         colModel: [
-            { label: '课程ID', name: 'classId', index: 'class_id', width: 80 },
-			{ label: '课程中文名字', name: 'classNameCn', index: 'class_name_cn', width: 80 },
-			{ label: '课程名字', name: 'className', index: 'class_name', width: 80 },
+            { label: '绘本ID', name: 'classId', index: 'class_id', width: 80 },
+			{ label: '绘本中文名字', name: 'classNameCn', index: 'class_name_cn', width: 80 },
+			{ label: '绘本名字', name: 'className', index: 'class_name', width: 80 },
 			{ label: '封面预览', name: 'frontcoverUrl', index: 'frontcover_url', width: 80,align: "center", sortable: false, editable: false, formatter: alarmFormatter },
 			{ label: '状态', name: 'statusStr', index: 'status', width: 80 },
-			{ label: '课程等级', name: 'classLevelStr', index: 'class_level', width: 80}
+			{ label: '绘本等级', name: 'classLevelStr', index: 'class_level', width: 80}
         ],
 		viewrecords: true,
         height: 960,
@@ -39,15 +39,31 @@ $(function () {
         }
     });
 });
+var classLevelData;
+var gradeData;
+var pressData;
+var seriData;
 
 var vm = new Vue({
 	el:'#rrapp',
 	data:{
+        q:{
+            className: null
+        },
+        classLevelData:null,
+        gradeData:null,
+        pressData:null,
+        seriData:null,
 		showList: true,
 		title: null,
 		ctClass: {}
 	},
 	methods: {
+		initData:function () {
+            $.get("../ctpress/list", function(r){
+                vm.pressData = r.pressList;
+            });
+        },
 		query: function () {
 			vm.reload();
 		},
@@ -55,6 +71,7 @@ var vm = new Vue({
 			vm.showList = false;
 			vm.title = "新增课程";
 			vm.ctClass = {};
+			vm.initData();
 		},
 		update: function (event) {
 			var rowId = getSelectedRow();
@@ -65,8 +82,8 @@ var vm = new Vue({
 			}
 			vm.showList = false;
             vm.title = "修改";
-            
-            vm.getInfo(classId)
+            vm.getInfo(classId);
+            vm.initData();
 		},
 		saveOrUpdate: function (event) {
 			var url = vm.ctClass.classId == null ? "../ctclass/save" : "../ctclass/update";
@@ -113,10 +130,32 @@ var vm = new Vue({
                 vm.ctClass = r.ctClass;
             });
 		},
+		classLevelTree: function(){
+			layer.open({
+				type: 1,
+				offset: '50px',
+				skin: 'layui-layer-molv',
+				title: "选择菜单",
+				area: ['300px', '450px'],
+				shade: 0,
+				shadeClose: false,
+				content: jQuery("#menuLayer"),
+				btn: ['确定', '取消'],
+				btn1: function (index) {
+					var node = ztree.getSelectedNodes();
+					//选择上级菜单
+					vm.menu.parentId = node[0].menuId;
+					vm.menu.parentName = node[0].name;
+
+					layer.close(index);
+				}
+			});
+		},
 		reload: function (event) {
 			vm.showList = true;
 			var page = $("#jqGrid").jqGrid('getGridParam','page');
-			$("#jqGrid").jqGrid('setGridParam',{ 
+			$("#jqGrid").jqGrid('setGridParam',{
+                postData:{'className': vm.q.className},
                 page:page
             }).trigger("reloadGrid");
 		}

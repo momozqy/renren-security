@@ -8,6 +8,10 @@
 <div id="rrapp" v-cloak>
 	<div v-show="showList">
 		<div class="grid-btn">
+			<div class="form-group col-sm-2">
+				<input type="text" class="form-control" v-model="q.className" @keyup.enter="query" placeholder="绘本名">
+			</div>
+			<a class="btn btn-default" @click="query">查询</a>
 			#if($shiro.hasPermission("ctclass:save"))
 			<a class="btn btn-primary" @click="add"><i class="fa fa-plus"></i>&nbsp;新增</a>
 			#end
@@ -25,14 +29,14 @@
     <div v-show="!showList" class="panel panel-default">
 		<div class="panel-heading">{{title}}</div>
 		<form class="form-horizontal">
-			<div class="form-group">
-			   	<div class="col-sm-2 control-label">课程中文名字</div>
+			<!--<div class="form-group">
+			   	<div class="col-sm-2 control-label">绘本中文名字</div>
 			   	<div class="col-sm-10">
 			      <input type="text" class="form-control" v-model="ctClass.classNameCn" placeholder=""/>
 			    </div>
 			</div>
 			<div class="form-group">
-			   	<div class="col-sm-2 control-label">课程名字</div>
+			   	<div class="col-sm-2 control-label">绘本名字</div>
 			   	<div class="col-sm-10">
 			      <input type="text" class="form-control" v-model="ctClass.className" placeholder=""/>
 			    </div>
@@ -50,10 +54,114 @@
 			    </div>
 			</div>
 			<div class="form-group">
-			   	<div class="col-sm-2 control-label">课题等级</div>
+			   	<div class="col-sm-2 control-label">绘本等级</div>
 			   	<div class="col-sm-10">
 			      <input type="text" class="form-control" v-model="ctClass.classLevelStr" placeholder=""/>
 			    </div>
+			</div>-->
+			<div class="form-group">
+				<label for="" class="col-sm-2 control-label">名称(英文)</label>
+				<div class="col-sm-10">
+					<input type="text" class="form-control" v-model="ctClass.className" placeholder="图书英文名">
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="" class="col-sm-2 control-label">名称(中文)</label>
+				<div class="col-sm-10">
+					<input type="text" class="form-control" v-model="ctClass.classNameCn" placeholder="图书中文名">
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="" class="col-sm-2 control-label">作者</label>
+				<div class="col-sm-10">
+					<input type="text" class="form-control" placeholder="作者" v-model="ctClass.author">
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="" class="col-sm-2 control-label">级别</label>
+				<div class="col-sm-10">
+					<select class="form-control" v-model="ctClass.pressId">
+						<option v-for="press in pressData" :value="press.id">
+							{{ press.pressName }}
+						</option>
+					</select>
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="" class="col-sm-2 control-label">组别</label>
+				<div class="col-sm-3">
+					<select list="ctGradeList" listKey="id"
+							  listValue="gradeName" value="clazz.grade.id"
+							  name="clazz.grade.id" headerKey="" headerValue="--请选择--"
+							  cssClass="form-control">
+					</select>
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="" class="col-sm-2 control-label">属性</label>
+				<div class="col-sm-5">
+					<div class="checkbox">
+						<label>
+							<input type="checkbox" name="clazz.classType.typeId" value="2"
+								   checked="checked">设为免费
+						</label>
+					</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="" class="col-sm-2 control-label">属性</label>
+				<div class="col-sm-5">
+					<div class="checkbox">
+						<label>
+							<input type="checkbox" name="clazz.megagame" value="true">大赛用书</s:else>
+						</label>
+					</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="" class="col-sm-2 control-label">出版社</label>
+				<div class="col-sm-5">
+					<select list="pressList" listKey="id" listValue="pressName"
+							  value="clazz.press.id" name="clazz.press.id" headerKey=""
+							  headerValue="--请选择--" cssClass="form-control">
+					</select>
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="" class="col-sm-2 control-label">系列</label>
+				<div class="col-sm-5">
+					<select list="seriList" listKey="seriId" listValue="seriName"
+							  value="clazz.seri.seriId" name="clazz.seri.seriId" headerKey=""
+							  headerValue="--请选择--" cssClass="form-control">
+					</select>
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="" class="col-sm-2 control-label">图书封面</label>
+				<div class="col-sm-5">
+					<input type="file" id="inputFile" name="frontcover">
+					<p class="help-block">大小为400*300的JPG,PNG图片</p>
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="" class="col-sm-2 control-label">语音包</label>
+				<div class="col-sm-5">
+					<input type="file" name="audio">
+					<p class="help-block">.zip文件,单图语音分开</p>
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="" class="col-sm-2 control-label">图片包</label>
+				<div class="col-sm-5">
+					<input type="file" name="picture">
+					<p class="help-block">.zip文件,单语音分开</p>
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="" class="col-sm-2 control-label">导读</label>
+				<div class="col-sm-8">
+							<textarea name="clazz.classSummary" class="form-control" rows="5" value="1111"></textarea>
+				</div>
 			</div>
 			<div class="form-group">
 				<div class="col-sm-2 control-label">保存</div>

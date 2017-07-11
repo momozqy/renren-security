@@ -19,6 +19,8 @@ public class Query extends LinkedHashMap<String, Object> {
     //每页条数
     private int limit;
 
+    public Query(){};
+
     public Query(Map<String, Object> params){
         this.putAll(params);
 

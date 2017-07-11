@@ -48,6 +48,11 @@
 
 	<select id="queryList" resultType="io.renren.entity.CtClassEntity">
 		select * from ct_class
+		<where>
+			<if test="className != null and className.trim() != ''">
+				and `class_name` like concat('%',#{className},'%')
+			</if>
+		</where>
         <choose>
             <when test="sidx != null and sidx.trim() != ''">
                 order by ${sidx} ${order}
