@@ -83,4 +83,13 @@
 	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
 		<property name="basePackage" value="io.renren.dao" />
 	</bean>
+
+	<bean class="io.renren.utils.SystemProperties">
+		<property name="STORAGE_DIR" value="${STORAGE_DIR}" />
+		<property name="PIC_DIR" value="${PIC_DIR}" />
+		<property name="TEMP_DIR" value="${TEMP_DIR}" />
+		<property name="ZIP_PIC_DIR" value="${ZIP_PIC_DIR}" />
+		<property name="PIC_PATH" value="${PIC_PATH}" />
+		<property name="ZIP_MP3_DIR" value="${ZIP_MP3_DIR}" />
+	</bean>
 </beans>

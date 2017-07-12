@@ -196,7 +196,7 @@ public class CtClassEntity implements Serializable {
 	 * 设置：
 	 */
 	public void setFrontcoverUrl(String frontcoverUrl) {
-		this.frontcoverUrl = "http://www.andotech.cn/pic"+frontcoverUrl;
+		this.frontcoverUrl = frontcoverUrl;
 	}
 	/**
 	 * 获取：

@@ -6,4 +6,9 @@
 	    <scope>application</scope>
 	    <class>io.renren.shiro.VelocityShiro</class>
 	</tool>
+	<tool>
+		<key>constant</key>
+		<scope>application</scope>
+		<class>io.renren.utils.SystemProperties</class>
+	</tool>
 </toolbox>

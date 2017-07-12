@@ -1,4 +1,5 @@
 function alarmFormatter(cellvalue, options, rowdata) {
+	cellvalue  = "http://www.andotech.cn/pic" + cellvalue;
     return ' <img src="'+cellvalue+'" id="img' + rowdata.Id + '"  style="width:100px;height:75px;" />';
 }
 $(function () {
@@ -39,11 +40,6 @@ $(function () {
         }
     });
 });
-var classLevelData;
-var gradeData;
-var pressData;
-var seriData;
-
 var vm = new Vue({
 	el:'#rrapp',
 	data:{
@@ -60,8 +56,21 @@ var vm = new Vue({
 	},
 	methods: {
 		initData:function () {
-            $.get("../ctpress/list", function(r){
+            //获取等级
+            $.get("../ctclasslevel/list", function(r){
+                vm.classLevelData = r.classLevelList;
+            });
+			//获取出版社列表
+			$.get("../ctpress/list", function(r){
                 vm.pressData = r.pressList;
+            });
+			//获取系列列表
+            $.get("../ctseri/list", function(r){
+                vm.seriData = r.seriList;
+            });
+			//获取组别
+            $.get("../ctgrade/list", function(r){
+                vm.gradeData = r.gradeList;
             });
         },
 		query: function () {
@@ -71,7 +80,6 @@ var vm = new Vue({
 			vm.showList = false;
 			vm.title = "新增课程";
 			vm.ctClass = {};
-			vm.initData();
 		},
 		update: function (event) {
 			var rowId = getSelectedRow();
@@ -83,7 +91,6 @@ var vm = new Vue({
 			vm.showList = false;
             vm.title = "修改";
             vm.getInfo(classId);
-            vm.initData();
 		},
 		saveOrUpdate: function (event) {
 			var url = vm.ctClass.classId == null ? "../ctclass/save" : "../ctclass/update";
@@ -128,6 +135,7 @@ var vm = new Vue({
 		getInfo: function(classId){
 			$.get("../ctclass/info/"+classId, function(r){
                 vm.ctClass = r.ctClass;
+                vm.ctClass.fullPath = "http://www.andotech.cn/pic"+vm.ctClass.frontcoverUrl;
             });
 		},
 		classLevelTree: function(){
@@ -159,5 +167,8 @@ var vm = new Vue({
                 page:page
             }).trigger("reloadGrid");
 		}
-	}
+	},
+    mounted:function () {
+        this.initData();
+    }
 });
