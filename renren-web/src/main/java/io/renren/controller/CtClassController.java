@@ -9,6 +9,7 @@ import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -60,9 +61,9 @@ public class CtClassController {
 	 */
 	@RequestMapping("/save")
 	@RequiresPermissions("ctclass:save")
-	public R save(@RequestBody CtClassEntity ctClass){
+	public R save(CtClassEntity ctClass) throws IOException{
+		//文件处理
 		ctClassService.save(ctClass);
-		
 		return R.ok();
 	}
 	
@@ -71,7 +72,7 @@ public class CtClassController {
 	 */
 	@RequestMapping("/update")
 	@RequiresPermissions("ctclass:update")
-	public R update(@RequestBody CtClassEntity ctClass){
+	public R update(CtClassEntity ctClass){
 		ctClassService.update(ctClass);
 		
 		return R.ok();

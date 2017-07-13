@@ -28,7 +28,8 @@
     
     <div v-show="!showList" class="panel panel-default">
 		<div class="panel-heading">{{title}}</div>
-		<form class="form-horizontal">
+		<form class="form-horizontal" id="ClassForm" method="post"
+			  action="../ctclass/save" enctype="multipart/form-data">
 			<!--<div class="form-group">
 			   	<div class="col-sm-2 control-label">绘本中文名字</div>
 			   	<div class="col-sm-10">
@@ -62,25 +63,25 @@
 			<div class="form-group">
 				<label for="" class="col-sm-2 control-label">名称(英文)</label>
 				<div class="col-sm-10">
-					<input type="text" class="form-control" v-model="ctClass.className" placeholder="图书英文名">
+					<input type="text" class="form-control" name="className" v-model="ctClass.className" placeholder="图书英文名">
 				</div>
 			</div>
 			<div class="form-group">
 				<label for="" class="col-sm-2 control-label">名称(中文)</label>
 				<div class="col-sm-10">
-					<input type="text" class="form-control" v-model="ctClass.classNameCn" placeholder="图书中文名">
+					<input type="text" class="form-control" name="classNameCn" v-model="ctClass.classNameCn" placeholder="图书中文名">
 				</div>
 			</div>
 			<div class="form-group">
 				<label for="" class="col-sm-2 control-label">作者</label>
 				<div class="col-sm-10">
-					<input type="text" class="form-control" placeholder="作者" v-model="ctClass.author">
+					<input type="text" class="form-control" name="author" placeholder="作者" v-model="ctClass.author">
 				</div>
 			</div>
 			<div class="form-group">
 				<label for="" class="col-sm-2 control-label">级别</label>
 				<div class="col-sm-10">
-					<select class="form-control" v-model="ctClass.classLevel">
+					<select class="form-control" name="classLevel" v-model="ctClass.classLevel">
 						<option v-for="level in classLevelData" :value="level.id">
 							{{ level.levelDesc }}
 						</option>
@@ -90,7 +91,7 @@
 			<div class="form-group">
 				<label for="" class="col-sm-2 control-label">组别</label>
 				<div class="col-sm-10">
-					<select class="form-control" v-model="ctClass.gradeId">
+					<select class="form-control" name="gradeId" v-model="ctClass.gradeId">
 						<option v-for="grade in gradeData" :value="grade.id">
 							{{ grade.gradeName }}
 						</option>
@@ -99,29 +100,28 @@
 			</div>
 			<div class="form-group">
 				<label for="" class="col-sm-2 control-label">属性</label>
-				<div class="col-sm-5">
-					<div class="checkbox">
-						<label>
-							<input type="checkbox" name="clazz.classType.typeId" value="2"
-								   checked="checked">设为免费
-						</label>
-					</div>
+				<div class="col-sm-10">
+					<select class="form-control" name="classType" v-model="ctClass.classType">
+						<option value="2">免费</option>
+						<option value="1">会员</option>
+						<option value="3">VIP</option>
+					</select>
 				</div>
 			</div>
 			<div class="form-group">
 				<label for="" class="col-sm-2 control-label">属性</label>
-				<div class="col-sm-5">
+				<div class="col-sm-10">
 					<div class="checkbox">
 						<label>
-							<input type="checkbox" v-model="ctClass.megagame">大赛用书</s:else>
+							<input type="checkbox" name="megagame" v-model="ctClass.megagame">大赛用书
 						</label>
 					</div>
 				</div>
 			</div>
 			<div class="form-group">
 				<label for="" class="col-sm-2 control-label">出版社</label>
-				<div class="col-sm-5">
-					<select class="form-control" v-model="ctClass.pressId">
+				<div class="col-sm-10">
+					<select class="form-control" name="pressId" v-model="ctClass.pressId">
 						<option v-for="press in pressData" :value="press.id">
 							{{ press.pressName }}
 						</option>
@@ -130,8 +130,8 @@
 			</div>
 			<div class="form-group">
 				<label for="" class="col-sm-2 control-label">系列</label>
-				<div class="col-sm-5">
-					<select class="form-control" v-model="ctClass.seriId">
+				<div class="col-sm-10">
+					<select class="form-control" name="seriId" v-model="ctClass.seriId">
 						<option v-for="seri in seriData" :value="seri.seriId">
 							{{ seri.seriName }}
 						</option>
@@ -140,40 +140,40 @@
 			</div>
 			<div class="form-group">
 				<label for="imgpre" class="col-sm-2 control-label">封面预览</label>
-				<div class="col-sm-5">
+				<div class="col-sm-10">
 					<img id="imgpre" :src="ctClass.fullPath">
 				</div>
 			</div>
 			<div class="form-group">
 				<label for="inputFile" class="col-sm-2 control-label">图书封面</label>
-				<div class="col-sm-5">
-					<input type="file" id="inputFile" name="frontcover">
+				<div class="col-sm-10">
+					<input type="file" id="inputFile" name="frontcoverFile">
 					<p class="help-block">大小为400*300的JPG,PNG图片</p>
 				</div>
 			</div>
 			<div class="form-group">
 				<label for="" class="col-sm-2 control-label">语音包</label>
-				<div class="col-sm-5">
-					<input type="file" name="audio">
+				<div class="col-sm-10">
+					<input type="file" name="mp3Zip">
 					<p class="help-block">.zip文件,单图语音分开</p>
 				</div>
 			</div>
 			<div class="form-group">
 				<label for="" class="col-sm-2 control-label">图片包</label>
-				<div class="col-sm-5">
-					<input type="file" name="picture">
+				<div class="col-sm-10">
+					<input type="file" name="picZip">
 					<p class="help-block">.zip文件,单语音分开</p>
 				</div>
 			</div>
 			<div class="form-group">
 				<label for="" class="col-sm-2 control-label">导读</label>
 				<div class="col-sm-10">
-							<textarea class="form-control" rows="5">{{ctClass.classSummary}}</textarea>
+							<textarea class="form-control" rows="5" name="classSummary">{{ctClass.classSummary}}</textarea>
 				</div>
 			</div>
 			<div class="form-group">
 				<div class="col-sm-2 control-label"></div>
-				<input type="button" class="btn btn-primary" @click="saveOrUpdate" value="确定"/>
+				<input type="button" class="btn btn-primary" @click="saveOrUpdate" value="提交"/>
 				&nbsp;&nbsp;<input type="button" class="btn btn-warning" @click="reload" value="返回"/>
 			</div>
 		</form>

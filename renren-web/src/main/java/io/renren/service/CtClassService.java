@@ -2,6 +2,7 @@ package io.renren.service;
 
 import io.renren.entity.CtClassEntity;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -20,7 +21,7 @@ public interface CtClassService {
 	
 	int queryTotal(Map<String, Object> map);
 	
-	void save(CtClassEntity ctClass);
+	void save(CtClassEntity ctClass) throws IOException;
 	
 	void update(CtClassEntity ctClass);
 	

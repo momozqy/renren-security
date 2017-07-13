@@ -93,28 +93,31 @@ var vm = new Vue({
             vm.getInfo(classId);
 		},
 		saveOrUpdate: function (event) {
-			var url = vm.ctClass.classId == null ? "../ctclass/save" : "../ctclass/update";
-			$.ajax({
-				type: "POST",
-			    url: url,
-			    data: JSON.stringify(vm.ctClass),
-			    success: function(r){
-			    	if(r.code === 0){
-						alert('操作成功', function(index){
-							vm.reload();
-						});
-					}else{
-						alert(r.msg);
-					}
-				}
+            var url = vm.ctClass.classId == null ? "../ctclass/save" : "../ctclass/update";
+
+			$('#ClassForm').ajaxSubmit({
+				url:url,
+				success:function (r) {
+                    if(r.code === 0){
+                        alert('操作成功', function(index){
+                            vm.reload();
+                        });
+                    }else{
+                        alert(r.msg);
+                    }
+                }
 			});
 		},
 		del: function (event) {
-			var classIds = getSelectedRows();
-			if(classIds == null){
+			var rowIds = getSelectedRows();
+			if(rowIds == null){
 				return ;
 			}
-			
+			var classIds = new Array();
+			for(rowId in rowIds){
+                var rowData = $("#jqGrid").jqGrid("getRowData",rowIds[rowId]);
+                classIds.push(rowData.classId)
+			}
 			confirm('确定要删除选中的记录？', function(){
 				$.ajax({
 					type: "POST",

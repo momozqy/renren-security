@@ -2,6 +2,7 @@ package io.renren.entity;
 
 import io.renren.entity.enums.ClassLevelEnum;
 import io.renren.entity.enums.StatusEnum;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -32,6 +33,8 @@ public class CtClassEntity implements Serializable {
 	private String classSummary;
 	//
 	private String author;
+	//存放封面图片
+	private MultipartFile frontcoverFile;
 	//
 	private String frontcoverUrl;
 	//
@@ -86,12 +89,40 @@ public class CtClassEntity implements Serializable {
 	private Integer pressId;
 	//
 	private String mp3ZipUrl;
+	//存放MP3压缩文件
+	private MultipartFile mp3Zip;
 	//
 	private String picZipUrl;
+	//存放pic压缩文件
+	private MultipartFile picZip;
 	//
 	private Integer megagame;
 	//
 	private Integer gradeId;
+
+	public MultipartFile getFrontcoverFile() {
+		return frontcoverFile;
+	}
+
+	public void setFrontcoverFile(MultipartFile frontcoverFile) {
+		this.frontcoverFile = frontcoverFile;
+	}
+
+	public MultipartFile getMp3Zip() {
+		return mp3Zip;
+	}
+
+	public void setMp3Zip(MultipartFile mp3Zip) {
+		this.mp3Zip = mp3Zip;
+	}
+
+	public MultipartFile getPicZip() {
+		return picZip;
+	}
+
+	public void setPicZip(MultipartFile picZip) {
+		this.picZip = picZip;
+	}
 
 	public String getClassLevelStr() {
 		return classLevelStr;
