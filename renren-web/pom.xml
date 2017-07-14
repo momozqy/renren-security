@@ -35,6 +35,11 @@
             <artifactId>renren-api</artifactId>
             <version>${renren-version}</version>
         </dependency>
+        <dependency>
+            <groupId>nuxeo.common</groupId>
+            <artifactId>nuxeo-common</artifactId>
+            <version>1.0</version>
+        </dependency>
     </dependencies>
 	<build>
 		<finalName>renren-security</finalName>

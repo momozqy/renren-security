@@ -5,15 +5,17 @@ import io.renren.entity.CtClassEntity;
 import io.renren.entity.enums.StatusEnum;
 import io.renren.service.CtClassService;
 import io.renren.utils.SystemProperties;
+import org.apache.commons.io.FileUtils;
+import org.nuxeo.common.utils.ZipUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
-import java.io.IOException;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.util.*;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 
 @Service("ctClassService")
@@ -37,7 +39,7 @@ public class CtClassServiceImpl implements CtClassService {
 	}
 	
 	@Override
-	public void save(CtClassEntity ctClass) throws IOException{
+	public void save(CtClassEntity ctClass) throws Exception{
 		String uuid = UUID.randomUUID().toString();
 		String uuidTime = String.valueOf(System.currentTimeMillis());
 		String frontcoverUrl = File.separator + uuid + ".png";
@@ -62,6 +64,80 @@ public class CtClassServiceImpl implements CtClassService {
 		ctClass.setClassVersion(1);
 		ctClass.setSort(1);
 		ctClassDao.save(ctClass);
+
+		//把压缩包复制到临时文件
+        File tempPic = new File(SystemProperties.TEMP_DIR + File.separator + ctClass.getPicZipUrl());
+        File tempMp3 = new File(SystemProperties.TEMP_DIR + File.separator + ctClass.getMp3ZipUrl());
+        FileUtils.copyFile(picZip,tempPic);
+        FileUtils.copyFile(mp3Zip,tempMp3);
+		//解压临时文件
+		ZipUtils.unzip(picZip,tempPic.getParentFile());
+		ZipUtils.unzip(mp3Zip,tempMp3.getParentFile());
+
+		// 获取picture 和 audio 目录
+		File[] files = tempPic.getParentFile().listFiles();
+		File mainMp3 = null;
+		File mainPic = null;
+		List<File> pics = new ArrayList<File>();
+		List<File> audios = new ArrayList<File>();
+		for(File file : files){
+			File picDir = new File(
+					SystemProperties.STORAGE_DIR  + File.separator + "picture" + File.separator + ctClass.getClassId() + File.separator + "picture");
+			File audioDir = new File(
+					SystemProperties.STORAGE_DIR + File.separator + "picture" + File.separator + ctClass.getClassId() + File.separator + "audio");
+
+			if (!picDir.exists()) {
+				picDir.mkdirs();
+			}
+
+			if (!audioDir.exists()) {
+				audioDir.mkdirs();
+			}
+			if (file.getName().equals("picture") && file.isDirectory()) {
+				File fP = new File(SystemProperties.PIC_DIR + File.separator + ctClass.getFrontcoverUrl());
+				// 拷贝封面到picture目录下
+				FileUtils.copyFileToDirectory(fP, file);
+
+				for (File pic : file.listFiles()) {
+					File newfile = null;
+					if (pic.getName().endsWith(".png")) {
+						// 如果是首页
+						if (pic.getName().equals(fP.getName())) {
+							newfile = new File(pic.getAbsolutePath().replaceAll(fP.getName(), "main@2x.png"));
+							pic.renameTo(newfile);
+							mainPic = newfile;
+							continue;
+						} else {// 如果不是首页
+							newfile = new File(pic.getAbsolutePath().replaceAll(".png", "@2x.png"));
+							// 在pic改名字前存一份
+							pic.renameTo(newfile);
+							FileUtils.copyFileToDirectory(newfile, picDir);
+						}
+					}
+					if (newfile == null) {
+						continue;
+					}
+					if (newfile.getName().endsWith(".png")) {
+						pics.add(newfile);
+					}
+				}
+			} else if (file.getName().equals("audio") && file.isDirectory()) {
+				for (File audio : file.listFiles()) {
+					if (audio.getName().equals("main.mp3")) {
+						mainMp3 = audio;
+					} else if (audio.getName().endsWith(".mp3")) {
+						audios.add(audio);
+					}
+					FileUtils.copyFileToDirectory(audio, audioDir);
+				}
+			}
+		}
+		tempMp3.delete();
+		tempPic.delete();
+		ZipOutputStream out = new ZipOutputStream(new FileOutputStream(SystemProperties.STORAGE_DIR + File.separator + ctClass.getClassId() + ".zip"));
+		this.zip(out, tempPic.getParentFile(), "");
+		out.close();
+		FileUtils.deleteDirectory(tempPic.getParentFile());
 	}
 	
 	@Override
@@ -78,5 +154,23 @@ public class CtClassServiceImpl implements CtClassService {
 	public void deleteBatch(Integer[] classIds){
 		ctClassDao.deleteBatch(classIds);
 	}
-	
+
+	public static void zip(ZipOutputStream out, File f, String base) throws Exception {
+		if (f.isDirectory()) {
+			File[] fl = f.listFiles();
+			out.putNextEntry(new ZipEntry(base + "/"));
+			base = base.length() == 0 ? "" : base + "/";
+			for (int i = 0; i < fl.length; i++) {
+				zip(out, fl[i], base + fl[i].getName());
+			}
+		} else {
+			out.putNextEntry(new ZipEntry(base));
+			FileInputStream in = new FileInputStream(f);
+			int b;
+			while ((b = in.read()) != -1)
+				out.write(b);
+			in.close();
+		}
+
+	}
 }
