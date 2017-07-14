@@ -267,6 +267,14 @@
 			<artifactId>freemarker</artifactId>
 			<version>${freemarker-version}</version>
 		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/org.nuxeo.common/nuxeo-common -->
+		<dependency>
+			<groupId>nuxeo.common</groupId>
+			<artifactId>nuxeo-common</artifactId>
+			<version>1.0</version>
+		</dependency>
+
 	</dependencies>
 
 	<build>

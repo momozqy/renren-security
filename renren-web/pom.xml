@@ -42,7 +42,7 @@
         </dependency>
     </dependencies>
 	<build>
-		<finalName>renren-security</finalName>
+		<finalName>candytree</finalName>
 	</build>
 	
 </project>

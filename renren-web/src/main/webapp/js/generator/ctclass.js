@@ -52,7 +52,8 @@ var vm = new Vue({
         seriData:null,
 		showList: true,
 		title: null,
-		ctClass: {}
+		ctClass: {},
+        ischecked:0
 	},
 	methods: {
 		initData:function () {
@@ -80,6 +81,10 @@ var vm = new Vue({
 			vm.showList = false;
 			vm.title = "新增课程";
 			vm.ctClass = {};
+            $('#frontcover').show();
+            $('#audiozip').show();
+            $('#piczip').show();
+            $('#frontcoverpre').hide();
 		},
 		update: function (event) {
 			var rowId = getSelectedRow();
@@ -91,23 +96,56 @@ var vm = new Vue({
 			vm.showList = false;
             vm.title = "修改";
             vm.getInfo(classId);
+            $('#frontcover').hide();
+            $('#audiozip').hide();
+            $('#piczip').hide();
+            $('#frontcoverpre').show();
 		},
 		saveOrUpdate: function (event) {
-            var url = vm.ctClass.classId == null ? "../ctclass/save" : "../ctclass/update";
-
-			$('#ClassForm').ajaxSubmit({
-				url:url,
-				success:function (r) {
-                    if(r.code === 0){
-                        alert('操作成功', function(index){
-                            vm.reload();
-                        });
-                    }else{
-                        alert(r.msg);
+			if(vm.ctClass.classId == null) {
+				var loadDialog;
+                $('#ClassForm').ajaxSubmit({
+                    beforeSubmit:function(data){
+                        for (temp in data){
+                            if(data[temp].name=="megagame"){
+                                data[temp].value = vm.ischecked;
+                                break;
+                            }
+                        }
+                        console.log(data);
+						loadDialog = layer.load(1, {shade: [0.5,'#9E9E9E']});
+					},
+                    success: function (r) {
+                        layer.close(loadDialog);
+                        if (r.code === 0) {
+                            alert('操作成功', function (index) {
+                                vm.reload();
+                            });
+                        } else {
+                            alert(r.msg);
+                        }
                     }
-                }
-			});
+                });
+            }else{
+                $.ajax({
+                    type: "POST",
+                    url: "../ctclass/update",
+                    data: JSON.stringify(vm.ctClass),
+                    success: function(r){
+                        if(r.code === 0){
+                            alert('操作成功', function(index){
+                                vm.reload();
+                            });
+                        }else{
+                            alert(r.msg);
+                        }
+                    }
+                });
+			}
 		},
+        isMegagame:function () {
+            vm.ischecked = vm.ischecked==1?0:1;
+        },
 		del: function (event) {
 			var rowIds = getSelectedRows();
 			if(rowIds == null){
