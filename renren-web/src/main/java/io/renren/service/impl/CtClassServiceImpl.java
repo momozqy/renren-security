@@ -2,17 +2,17 @@ package io.renren.service.impl;
 
 import io.renren.dao.CtClassDao;
 import io.renren.entity.CtClassEntity;
+import io.renren.entity.LessonJson;
 import io.renren.entity.enums.StatusEnum;
 import io.renren.service.CtClassService;
 import io.renren.utils.SystemProperties;
+import net.sf.json.JSONObject;
 import org.apache.commons.io.FileUtils;
 import org.nuxeo.common.utils.ZipUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
+import java.io.*;
 import java.util.*;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
@@ -142,13 +142,14 @@ public class CtClassServiceImpl implements CtClassService {
 				audioNames.add(ii + ".unkonwn.mp3");
 			}
 		}
-
+        sort(picNames,audioNames);
 		if (null != mainMp3) {
 			audioNames.add(mainMp3.getName());
 		}
 		if (null != mainPic) {
 			picNames.add(mainPic.getName());
 		}
+        preseJson(ctClass, tempPic.getParentFile().getPath(), picNames, audioNames);
 		tempMp3.delete();
 		tempPic.delete();
 		ZipOutputStream out = new ZipOutputStream(new FileOutputStream(SystemProperties.STORAGE_DIR + File.separator + ctClass.getClassId() + ".zip"));
@@ -190,8 +191,52 @@ public class CtClassServiceImpl implements CtClassService {
 		}
 
 	}
+    class CompareClass implements Comparator<String> {
+        private String type;
 
-	public static void sort(List<String> pics,List<String> audio){
+        @Override
+        public int compare(String o1, String o2) {
+            String str1 = o1.substring(0, o1.indexOf(this.type));
+            String str2 = o2.substring(0, o2.indexOf(this.type));
+            int flag = 1;
+            if (Integer.valueOf(str1) < Integer.valueOf(str2)) {
+                flag = -1;
+            }
+            return flag;
+        }
 
+        public String getType() {
+            return this.type;
+        }
+
+        public void setType(String type) {
+            this.type = type;
+        }
+
+    }
+	public void sort(List<String> pics,List<String> audios){
+        CompareClass compareClass = new CompareClass();
+        compareClass.setType("@");
+        Collections.sort(pics, compareClass);
+        compareClass.setType(".");
+        Collections.sort(audios, compareClass);
 	}
+
+    private static void preseJson(CtClassEntity ctClass, String jsonPath, List<String> picNames, List<String> audioNames)
+            throws UnsupportedEncodingException, IOException {
+        LessonJson lessonJson = new LessonJson();
+        lessonJson.setAudio(audioNames.toArray(new String[0]));
+        lessonJson.setPicture(picNames.toArray(new String[0]));
+        lessonJson.genReadingGuide(ctClass.getAge(), ctClass.getClassName(), ctClass.getClassNameCn(),
+                ctClass.getAuthor(), ctClass.getFrontcoverUrl(), ctClass.getClassSummary(), ctClass.getPreNote(),
+                ctClass.getMidNote(), ctClass.getAftNote(), ctClass.getKeyword(), ctClass.getReferTranslate(),
+                ctClass.getCultureExpand(), ctClass.getEngageLife());
+        File jsontext = new File(jsonPath + File.separator + "text" + File.separator + "info.json");
+        if (!jsontext.getParentFile().exists()) {
+            jsontext.getParentFile().mkdirs();
+        }
+        OutputStream os = new FileOutputStream(jsontext);
+        os.write(JSONObject.fromObject(lessonJson).toString().getBytes("utf-8"));
+        os.close();
+    }
 }
