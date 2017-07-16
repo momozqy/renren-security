@@ -109,10 +109,10 @@ var vm = new Vue({
                         for (temp in data){
                             if(data[temp].name=="megagame"){
                                 data[temp].value = vm.ischecked;
+                                flag = false;
                                 break;
                             }
                         }
-                        console.log(data);
 						loadDialog = layer.load(1, {shade: [0.5,'#9E9E9E']});
 					},
                     success: function (r) {

@@ -132,6 +132,23 @@ public class CtClassServiceImpl implements CtClassService {
 				}
 			}
 		}
+		List<String> picNames = new ArrayList<String>();
+		List<String> audioNames = new ArrayList<String>();
+		for (int ii = 0; ii < pics.size(); ii++) {
+			picNames.add(pics.get(ii).getName());
+			if (audios.size() > ii) {
+				audioNames.add(audios.get(ii).getName());
+			} else {
+				audioNames.add(ii + ".unkonwn.mp3");
+			}
+		}
+
+		if (null != mainMp3) {
+			audioNames.add(mainMp3.getName());
+		}
+		if (null != mainPic) {
+			picNames.add(mainPic.getName());
+		}
 		tempMp3.delete();
 		tempPic.delete();
 		ZipOutputStream out = new ZipOutputStream(new FileOutputStream(SystemProperties.STORAGE_DIR + File.separator + ctClass.getClassId() + ".zip"));
@@ -171,6 +188,10 @@ public class CtClassServiceImpl implements CtClassService {
 				out.write(b);
 			in.close();
 		}
+
+	}
+
+	public static void sort(List<String> pics,List<String> audio){
 
 	}
 }
