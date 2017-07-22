@@ -71,7 +71,7 @@ public class CtClassController {
 	 */
 	@RequestMapping("/update")
 	@RequiresPermissions("ctclass:update")
-	public R update(CtClassEntity ctClass){
+	public R update(@RequestBody CtClassEntity ctClass){
 		ctClassService.update(ctClass);
 		
 		return R.ok();
