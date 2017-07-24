@@ -111,7 +111,70 @@
 			#{openId}
 		)
 	</insert>
-	 
+
+	<insert id="addUsersBatch" useGeneratedKeys="true" parameterType="java.util.List">
+		<selectKey resultType="int" keyProperty="id" order="AFTER">
+			SELECT
+			LAST_INSERT_ID()
+		</selectKey>
+		insert into ct_user
+		(
+		`user_name`,
+		`password`,
+		`type`,
+		`status`,
+		`true_name`,
+		`nickname`,
+		`sex`,
+		`age`,
+		`card_type`,
+		`card_number`,
+		`city`,
+		`pic`,
+		`pic_small`,
+		`tel`,
+		`mobile`,
+		`reg_time`,
+		`active_time`,
+		`remark`,
+		`parents_limit`,
+		`device_id`,
+		`invite_code`,
+		`student_id`,
+		`level`,
+		`open_id`
+		)
+		values
+		<foreach collection="list" item="item" index="index" separator="," >
+			(
+			#{item.userName},
+			#{item.password},
+			#{item.type},
+			#{item.status},
+			#{item.trueName},
+			#{item.nickname},
+			#{item.sex},
+			#{item.age},
+			#{item.cardType},
+			#{item.cardNumber},
+			#{item.city},
+			#{item.pic},
+			#{item.picSmall},
+			#{item.tel},
+			#{item.mobile},
+			#{item.regTime},
+			#{item.activeTime},
+			#{item.remark},
+			#{item.parentsLimit},
+			#{item.deviceId},
+			#{item.inviteCode},
+			#{item.studentId},
+			#{item.level},
+			#{item.openId}
+			)
+		</foreach>
+	</insert>
+
 	<update id="update" parameterType="io.renren.entity.CtUserEntity">
 		update ct_user 
 		<set>
