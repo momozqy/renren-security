@@ -1,14 +1,14 @@
 package io.renren.service.impl;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.Map;
-
 import io.renren.dao.CtUserDao;
 import io.renren.entity.CtUserEntity;
 import io.renren.service.CtUserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 
 
@@ -36,7 +36,14 @@ public class CtUserServiceImpl implements CtUserService {
 	public void save(CtUserEntity ctUser){
 		ctUserDao.save(ctUser);
 	}
-	
+
+	@Override
+	public void saveBatch(String userListStr) {
+		List<CtUserEntity> userList = new ArrayList<>();
+		System.out.println(userListStr);
+	//	ctUserDao.saveBatch(userList);
+	}
+
 	@Override
 	public void update(CtUserEntity ctUser){
 		ctUserDao.update(ctUser);

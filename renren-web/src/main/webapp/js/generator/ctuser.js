@@ -41,23 +41,36 @@ var vm = new Vue({
 	data:{
 		showList: true,
 		title: null,
-		ctUser: {}
+		ctUser: {},
+        userList:"",
+        inputShow:false,
+        batchShow:false
 	},
 	methods: {
 		query: function () {
 			vm.reload();
 		},
-		add: function(){
-			vm.showList = false;
-			vm.title = "新增";
-			vm.ctUser = {};
+        addBatch: function(){
+			
+			if(vm.userList=="")
 		},
+        batchShow:function () {
+            vm.title = "导入VIP用户";
+        	vm.showList = false;
+            vm.inputShow = false;
+            vm.batchShow = true;
+            vm.userList = "";
+        },
+        upateBatch:function () {
+
+        },
 		update: function (event) {
 			var userId = getSelectedRow();
 			if(userId == null){
 				return ;
 			}
 			vm.showList = false;
+			vm.inputShow = true;
             vm.title = "修改";
             
             vm.getInfo(userId)

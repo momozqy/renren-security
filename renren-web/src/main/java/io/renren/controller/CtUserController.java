@@ -1,21 +1,16 @@
 package io.renren.controller;
 
-import java.util.List;
-import java.util.Map;
-
-import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-
 import io.renren.entity.CtUserEntity;
 import io.renren.service.CtUserService;
 import io.renren.utils.PageUtils;
 import io.renren.utils.Query;
 import io.renren.utils.R;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -70,7 +65,15 @@ public class CtUserController {
 		
 		return R.ok();
 	}
-	
+	/**
+	 * 批量保存
+	 */
+	@RequestMapping("/saveBatch")
+	@RequiresPermissions("ctuser:save")
+	public R saveBatch(@RequestParam(value = "userListStr")String userListStr){
+
+		return R.ok();
+	}
 	/**
 	 * 修改
 	 */

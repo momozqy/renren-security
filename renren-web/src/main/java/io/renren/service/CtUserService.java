@@ -21,6 +21,8 @@ public interface CtUserService {
 	int queryTotal(Map<String, Object> map);
 	
 	void save(CtUserEntity ctUser);
+
+	void saveBatch(String userListStr);
 	
 	void update(CtUserEntity ctUser);
 	

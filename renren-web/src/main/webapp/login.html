@@ -9,6 +9,7 @@
   <link rel="stylesheet" href="statics/css/bootstrap.min.css">
   <link rel="stylesheet" href="statics/css/font-awesome.min.css">
   <link rel="stylesheet" href="statics/css/AdminLTE.min.css">
+    <link rel="stylesheet" href="statics/css/main.ce.css">
   <!-- AdminLTE Skins. Choose a skin from the css/skins
        folder instead of downloading all of them to reduce the load. -->
   <link rel="stylesheet" href="statics/css/all-skins.min.css">
@@ -20,14 +21,21 @@
   <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
   <![endif]-->
 </head>
-<body class="hold-transition login-page">
-<div class="login-box" id="rrapp" v-cloak>
+<body>
+<div data-v-48a38812="" class="index">
+    <div data-v-48a38812="" id="indexLizi">
+        <div id="hahaha" style="position: relative; top: 200px;">
+            <!--<canvas id="indexLiziCanvas" width="1920" height="950">-->
+
+            <!--</canvas>-->
+        </div>
+    </div>
+    <div class="login-box" id="rrapp" v-cloak>
   <div class="login-logo">
-    <b>绘读管理系统</b>
+      <b><font color="#FFFFFF">绘读管理系统</font></b>
   </div>
   <!-- /.login-logo -->
-  <div class="login-box-body">
-      <p class="login-box-msg">管理员登录</p>
+  <div class="login-box-body my-login-box-body">
       <div v-if="error" class="alert alert-danger alert-dismissible">
         <h4 style="margin-bottom: 0px;"><i class="fa fa-exclamation-triangle"></i> {{errorMsg}}</h4>
       </div>
@@ -64,6 +72,9 @@
 
   </div>
   <!-- /.login-box-body -->
+
+</div>
+
 </div>
 <!-- /.login-box -->
 <script src="statics/libs/jquery.min.js"></script>
@@ -72,6 +83,7 @@
 <script src="statics/libs/jquery.slimscroll.min.js"></script>
 <script src="statics/libs/fastclick.min.js"></script>
 <script src="statics/libs/app.js"></script>
+<script src="statics/plugins/three.min.js"></script>
 <script type="text/javascript">
 var vm = new Vue({
 	el:'#rrapp',
@@ -113,6 +125,161 @@ var vm = new Vue({
 		}
 	}
 });
+</script>
+<script type="text/javascript">
+    var SEPARATION = 100, AMOUNTX = 50, AMOUNTY = 50;
+
+    var container;
+    var camera, scene, renderer;
+
+    var particles, particle, count = 0;
+
+    var mouseX = 0, mouseY = -500;
+    var myWidth  = 1920;
+    var myHeight = 950;
+    var windowHalfX = myWidth / 2;
+    var windowHalfY = myHeight / 2;
+
+    init();
+    animate();
+
+    function init() {
+
+        container = document.getElementById("hahaha");
+        //container = document.createElement( 'div' );
+        //document.body.appendChild( container );
+
+        camera = new THREE.PerspectiveCamera( 100, myWidth / myHeight, 1, 10000 );
+        camera.position.z = 1000;
+        scene = new THREE.Scene();
+
+        particles = new Array();
+
+        var PI2 = Math.PI * 2;
+        var material = new THREE.ParticleCanvasMaterial( {
+
+            color: 0xffffff,
+            program: function ( context ) {
+
+                context.beginPath();
+                context.arc( 0, 0, 1, 0, PI2, true );
+                context.fill();
+
+            }
+
+        } );
+
+        var i = 0;
+
+        for ( var ix = 0; ix < AMOUNTX; ix ++ ) {
+
+            for ( var iy = 0; iy < AMOUNTY; iy ++ ) {
+
+                particle = particles[ i ++ ] = new THREE.Particle( material );
+                particle.position.x = ix * SEPARATION - ( ( AMOUNTX * SEPARATION ) / 2 );
+                particle.position.z = iy * SEPARATION - ( ( AMOUNTY * SEPARATION ) / 2 );
+                scene.add( particle );
+
+            }
+
+        }
+        renderer = new THREE.CanvasRenderer();
+        renderer.setSize( myWidth, myHeight );
+        console.log(renderer.domElement);
+        console.log(container);
+        //container.appendChild( renderer.domElement );
+        $(renderer.domElement).appendTo(container);
+
+        document.addEventListener( 'mousemove', onDocumentMouseMove, false );
+       // document.addEventListener( 'touchstart', onDocumentTouchStart, false );
+        //document.addEventListener( 'touchmove', onDocumentTouchMove, false );
+
+        //
+
+        window.addEventListener( 'resize', onWindowResize, false );
+
+    }
+
+    function onWindowResize() {
+
+        camera.aspect = myWidth / myHeight;
+        camera.updateProjectionMatrix();
+
+        renderer.setSize( window.innerWidth, window.innerHeight );
+
+    }
+
+    //
+
+    function onDocumentMouseMove( event ) {
+
+        mouseX = event.clientX - windowHalfX;
+        //mouseY = event.clientY - windowHalfY;
+
+    }
+
+    function onDocumentTouchStart( event ) {
+
+        if ( event.touches.length === 1 ) {
+
+            event.preventDefault();
+
+            mouseX = event.touches[ 0 ].pageX - windowHalfX;
+            mouseY = event.touches[ 0 ].pageY - windowHalfY;
+
+        }
+
+    }
+
+    function onDocumentTouchMove( event ) {
+
+        if ( event.touches.length === 1 ) {
+
+            event.preventDefault();
+
+            mouseX = event.touches[ 0 ].pageX - windowHalfX;
+            mouseY = event.touches[ 0 ].pageY - windowHalfY;
+
+        }
+
+    }
+
+    //
+
+    function animate() {
+
+        requestAnimationFrame( animate );
+
+        render();
+
+
+    }
+
+    function render() {
+
+        camera.position.x += ( mouseX - camera.position.x ) * .05;
+        camera.position.y += ( - mouseY - camera.position.y ) * .05;
+        camera.lookAt( scene.position );
+
+        var i = 0;
+
+        for ( var ix = 0; ix < AMOUNTX; ix ++ ) {
+
+            for ( var iy = 0; iy < AMOUNTY; iy ++ ) {
+
+                particle = particles[ i++ ];
+                particle.position.y = ( Math.sin( ( ix + count ) * 0.3 ) * 50 ) + ( Math.sin( ( iy + count ) * 0.5 ) * 50 );
+                particle.scale.x = particle.scale.y = ( Math.sin( ( ix + count ) * 0.3 ) + 1 ) * 2 + ( Math.sin( ( iy + count ) * 0.5 ) + 1 ) * 2;
+
+            }
+
+        }
+
+        renderer.render( scene, camera );
+
+        count += 0.1;
+
+    }
 </script>
 </body>
 </html>
