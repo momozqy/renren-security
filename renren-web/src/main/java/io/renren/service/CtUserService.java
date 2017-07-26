@@ -22,7 +22,7 @@ public interface CtUserService {
 	
 	void save(CtUserEntity ctUser);
 
-	void saveBatch(String userListStr);
+	void saveBatch(String userListStr,boolean isVip);
 	
 	void update(CtUserEntity ctUser);
 	

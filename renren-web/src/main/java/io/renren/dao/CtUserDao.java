@@ -12,5 +12,8 @@ import java.util.List;
  * @date 2017-07-10 17:20:28
  */
 public interface CtUserDao extends BaseDao<CtUserEntity> {
-	public int addUsersBatch(List<CtUserEntity> users);
+
+	public int updateUserTypeBatch(List<CtUserEntity> users);
+
+	public CtUserEntity queryByUser(CtUserEntity user);
 }

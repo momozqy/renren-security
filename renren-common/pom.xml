@@ -38,15 +38,15 @@
 			<properties>
 				<profile.name>dev</profile.name>
 			</properties>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
 		</profile>
 		<profile>
 			<id>pro</id>
 			<properties>
 				<profile.name>pro</profile.name>
 			</properties>
-			<activation>
-				<activeByDefault>true</activeByDefault>
-			</activation>
 		</profile>
 	</profiles>
 	<build>

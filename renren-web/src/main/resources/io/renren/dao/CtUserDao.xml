@@ -36,6 +36,13 @@
 		select * from ct_user where user_id = #{value}
 	</select>
 
+	<select id="queryByUser" resultType="io.renren.entity.CtUserEntity">
+		select * from ct_user
+		<where>
+			<if test="userName != null">`user_name` = #{userName} </if>
+		</where>
+	</select>
+
 	<select id="queryList" resultType="io.renren.entity.CtUserEntity">
 		select * from ct_user
         <choose>
@@ -112,7 +119,7 @@
 		)
 	</insert>
 
-	<insert id="addUsersBatch" useGeneratedKeys="true" parameterType="java.util.List">
+	<insert id="saveBatch" useGeneratedKeys="true" parameterType="java.util.List">
 		<selectKey resultType="int" keyProperty="id" order="AFTER">
 			SELECT
 			LAST_INSERT_ID()
@@ -204,6 +211,19 @@
 			<if test="openId != null">`open_id` = #{openId}</if>
 		</set>
 		where user_id = #{userId}
+	</update>
+	<update id="updateUserTypeBatch" parameterType="java.util.List">
+		<selectKey resultType="int" keyProperty="id" order="AFTER">
+			SELECT
+			LAST_INSERT_ID()
+		</selectKey>
+		<foreach collection="list" item="item" index="index" separator=";" >
+			update ct_user
+			<set>
+				`type` = #{item.type}
+			</set>
+			where user_name = #{item.userName}
+		</foreach>
 	</update>
 	
 	<delete id="delete">

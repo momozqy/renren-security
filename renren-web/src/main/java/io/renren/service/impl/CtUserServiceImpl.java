@@ -3,10 +3,12 @@ package io.renren.service.impl;
 import io.renren.dao.CtUserDao;
 import io.renren.entity.CtUserEntity;
 import io.renren.service.CtUserService;
+import io.renren.utils.EncryptUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -38,10 +40,32 @@ public class CtUserServiceImpl implements CtUserService {
 	}
 
 	@Override
-	public void saveBatch(String userListStr) {
+	public void saveBatch(String userListStr,boolean isVip) {
+		String[] userStrs = userListStr.split("\n");
 		List<CtUserEntity> userList = new ArrayList<>();
-		System.out.println(userListStr);
-	//	ctUserDao.saveBatch(userList);
+		List<CtUserEntity> userUpdateList = new ArrayList<>();
+		for (int i=0;i<userStrs.length;i++){
+			if (!EncryptUtils.isMobileNO(userStrs[i]))
+				continue;
+			CtUserEntity user = new CtUserEntity();
+			user.setMobile(userStrs[i]);
+			user.setRegTime(new Date());
+			user.setActiveTime(new Date());
+			user.setUserName(userStrs[i]);
+			user.setNickname(userStrs[i]);
+			user.setStatus(2);
+			user.setType(isVip?2:1);
+			user.setPassword(EncryptUtils.getMD5(userStrs[i]));
+			if(ctUserDao.queryByUser(user)!=null)
+				userUpdateList.add(user);
+			else {
+					userList.add(user);
+			}
+		}
+		if(isVip&&userList.size()!=0)
+			ctUserDao.saveBatch(userList);
+		ctUserDao.updateUserTypeBatch(userUpdateList);
+
 	}
 
 	@Override

@@ -50,19 +50,37 @@ var vm = new Vue({
 		query: function () {
 			vm.reload();
 		},
-        addBatch: function(){
-			
-			if(vm.userList=="")
+        addBatch: function(event){
+
+			$.get("../ctuser/saveBatch",{'userListStr':vm.userList,'isVip':true},
+                function(r){
+                    if(r.code === 0){
+                        alert('操作成功', function(index){
+                            vm.reload();
+                        });
+                    }else{
+                        alert(r.msg);
+                    }
+                });
 		},
-        batchShow:function () {
+        batchshow:function (event) {
             vm.title = "导入VIP用户";
         	vm.showList = false;
             vm.inputShow = false;
             vm.batchShow = true;
             vm.userList = "";
         },
-        upateBatch:function () {
-
+        upateBatch:function (event) {
+            $.get("../ctuser/saveBatch",{'userListStr':vm.userList,'isVip':false},
+                function(r){
+                    if(r.code === 0){
+                        alert('操作成功', function(index){
+                            vm.reload();
+                        });
+                    }else{
+                        alert(r.msg);
+                    }
+                });
         },
 		update: function (event) {
 			var userId = getSelectedRow();
@@ -70,6 +88,7 @@ var vm = new Vue({
 				return ;
 			}
 			vm.showList = false;
+			vm.batchShow = false;
 			vm.inputShow = true;
             vm.title = "修改";
             
@@ -122,6 +141,8 @@ var vm = new Vue({
 		},
 		reload: function (event) {
 			vm.showList = true;
+			vm.inputShow = false;
+			vm.batchShow = false;
 			var page = $("#jqGrid").jqGrid('getGridParam','page');
 			$("#jqGrid").jqGrid('setGridParam',{ 
                 page:page

@@ -70,8 +70,8 @@ public class CtUserController {
 	 */
 	@RequestMapping("/saveBatch")
 	@RequiresPermissions("ctuser:save")
-	public R saveBatch(@RequestParam(value = "userListStr")String userListStr){
-
+	public R saveBatch(@RequestParam(value = "userListStr",required = true)String userListStr,@RequestParam(value = "isVip",required = true)boolean isVip){
+		ctUserService.saveBatch(userListStr,isVip);
 		return R.ok();
 	}
 	/**
