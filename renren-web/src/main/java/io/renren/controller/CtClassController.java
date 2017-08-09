@@ -83,8 +83,7 @@ public class CtClassController {
 	@RequestMapping("/delete")
 	@RequiresPermissions("ctclass:delete")
 	public R delete(@RequestBody Integer[] classIds){
-		ctClassService.deleteBatch(classIds);
-		
+		ctClassService.delete(classIds[0]);
 		return R.ok();
 	}
 	

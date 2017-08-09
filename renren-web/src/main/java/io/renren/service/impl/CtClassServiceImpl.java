@@ -1,6 +1,7 @@
 package io.renren.service.impl;
 
 import io.renren.dao.CtClassDao;
+import io.renren.dao.CtUserClassDao;
 import io.renren.entity.CtClassEntity;
 import io.renren.entity.LessonJson;
 import io.renren.entity.enums.StatusEnum;
@@ -22,7 +23,9 @@ import java.util.zip.ZipOutputStream;
 public class CtClassServiceImpl implements CtClassService {
 	@Autowired
 	private CtClassDao ctClassDao;
-	
+	@Autowired
+	CtUserClassDao ctUserClassDao;
+
 	@Override
 	public CtClassEntity queryObject(Integer classId){
 		return ctClassDao.queryObject(classId);
@@ -165,6 +168,8 @@ public class CtClassServiceImpl implements CtClassService {
 	
 	@Override
 	public void delete(Integer classId){
+		//增加删除课程用户关联表
+		ctUserClassDao.delete(classId);
 		ctClassDao.delete(classId);
 	}
 	

@@ -11,8 +11,9 @@ $(function () {
 			{ label: '绘本中文名字', name: 'classNameCn', index: 'class_name_cn', width: 80 },
 			{ label: '绘本名字', name: 'className', index: 'class_name', width: 80 },
 			{ label: '封面预览', name: 'frontcoverUrl', index: 'frontcover_url', width: 80,align: "center", sortable: false, editable: false, formatter: alarmFormatter },
-			{ label: '状态', name: 'statusStr', index: 'status', width: 80 },
-			{ label: '绘本等级', name: 'classLevelStr', index: 'class_level', width: 80}
+            { label: '绘本类型', name: 'classTypeStr', index: 'class_type', width: 80},
+            { label: '绘本等级', name: 'classLevelStr', index: 'class_level', width: 80},
+            { label: '状态', name: 'statusStr', index: 'status', width: 80 }
         ],
 		viewrecords: true,
         height: 960,
@@ -21,7 +22,7 @@ $(function () {
         rownumbers: true, 
         rownumWidth: 25, 
         autowidth:true,
-        multiselect: true,
+        multiselect: false,
         pager: "#jqGridPager",
         jsonReader : {
             root: "page.list",
@@ -147,15 +148,15 @@ var vm = new Vue({
             vm.ischecked = vm.ischecked==1?0:1;
         },
 		del: function (event) {
-			var rowIds = getSelectedRows();
+			var rowIds = getSelectedRow();
 			if(rowIds == null){
 				return ;
 			}
 			var classIds = new Array();
-			for(rowId in rowIds){
-                var rowData = $("#jqGrid").jqGrid("getRowData",rowIds[rowId]);
-                classIds.push(rowData.classId)
-			}
+			//for(rowId in rowIds){
+            var rowData = $("#jqGrid").jqGrid("getRowData",rowIds);
+            classIds.push(rowData.classId)
+			//}
 			confirm('确定要删除选中的记录？', function(){
 				$.ajax({
 					type: "POST",

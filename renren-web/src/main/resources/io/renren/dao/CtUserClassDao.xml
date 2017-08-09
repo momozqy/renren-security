@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="io.renren.dao.CtUserClassDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="io.renren.entity.CtUserClassEntity" id="ctUserClassMap">
+        <result property="userId" column="user_id"/>
+        <result property="classId" column="class_id"/>
+        <result property="userType" column="user_type"/>
+        <result property="createdtime" column="createdtime"/>
+        <result property="operType" column="oper_type"/>
+    </resultMap>
+
+	<select id="queryObject" resultType="io.renren.entity.CtUserClassEntity">
+		select * from ct_user_class where user_id = #{value}
+	</select>
+
+	<select id="queryList" resultType="io.renren.entity.CtUserClassEntity">
+		select * from ct_user_class
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+			<otherwise>
+                order by user_id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="queryTotal" resultType="int">
+		select count(*) from ct_user_class 
+	</select>
+	 
+	<insert id="save" parameterType="io.renren.entity.CtUserClassEntity">
+		insert into ct_user_class
+		(
+			`user_id`, 
+			`class_id`, 
+			`user_type`, 
+			`createdtime`, 
+			`oper_type`
+		)
+		values
+		(
+			#{userId}, 
+			#{classId}, 
+			#{userType}, 
+			#{createdtime}, 
+			#{operType}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="io.renren.entity.CtUserClassEntity">
+		update ct_user_class 
+		<set>
+			<if test="classId != null">`class_id` = #{classId}, </if>
+			<if test="userType != null">`user_type` = #{userType}, </if>
+			<if test="createdtime != null">`createdtime` = #{createdtime}, </if>
+			<if test="operType != null">`oper_type` = #{operType}</if>
+		</set>
+		where user_id = #{userId}
+	</update>
+	
+	<delete id="delete">
+		delete from ct_user_class where class_id = #{value}
+	</delete>
+	
+	<delete id="deleteBatch">
+		delete from ct_user_class where user_id in 
+		<foreach item="userId" collection="array" open="(" separator="," close=")">
+			#{userId}
+		</foreach>
+	</delete>
+
+</mapper>

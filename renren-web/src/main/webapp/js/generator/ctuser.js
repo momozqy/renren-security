@@ -5,6 +5,7 @@ $(function () {
         colModel: [			
 			{ label: '用户Id', name: 'userId', index: 'user_id', width: 50, key: true },
 			{ label: '用户名', name: 'userName', index: 'user_name', width: 80 },
+            { label: '用户类型', name: 'typeStr', index: 'type', width: 80 },
 			{ label: '昵称', name: 'nickname', index: 'nickname', width: 80 },
 			{ label: '手机号', name: 'mobile', index: 'mobile', width: 80 },
 			{ label: '注册时间', name: 'regTime', index: 'reg_time', width: 80 }

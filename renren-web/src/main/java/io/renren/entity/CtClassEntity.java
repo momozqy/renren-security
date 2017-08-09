@@ -1,6 +1,7 @@
 package io.renren.entity;
 
 import io.renren.entity.enums.ClassLevelEnum;
+import io.renren.entity.enums.ClassTypeEnum;
 import io.renren.entity.enums.StatusEnum;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -23,6 +24,8 @@ public class CtClassEntity implements Serializable {
 	private Integer classId;
 	//
 	private Integer classType;
+	//课程类型名称
+	private String classTypeStr;
 	//
 	private Integer classVersion;
 	//
@@ -156,6 +159,7 @@ public class CtClassEntity implements Serializable {
 	 */
 	public void setClassType(Integer classType) {
 		this.classType = classType;
+		this.setClassTypeStr(ClassTypeEnum.getName(classType));
 	}
 	/**
 	 * 获取：
@@ -163,6 +167,15 @@ public class CtClassEntity implements Serializable {
 	public Integer getClassType() {
 		return classType;
 	}
+
+	public String getClassTypeStr() {
+		return classTypeStr;
+	}
+
+	public void setClassTypeStr(String classTypeStr) {
+		this.classTypeStr = classTypeStr;
+	}
+
 	/**
 	 * 设置：
 	 */

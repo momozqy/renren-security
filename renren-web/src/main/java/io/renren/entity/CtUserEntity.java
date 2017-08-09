@@ -1,5 +1,7 @@
 package io.renren.entity;
 
+import io.renren.entity.enums.UserTypeEnum;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -23,6 +25,8 @@ public class CtUserEntity implements Serializable {
 	private String password;
 	//1 普通用户 2 付费用户 4 学校用户
 	private Integer type;
+	//用户类型名称
+	private String typeStr;
 	//0：未激活1：激活  默认为未激活
 	private Integer status;
 	//
@@ -110,6 +114,7 @@ public class CtUserEntity implements Serializable {
 	 */
 	public void setType(Integer type) {
 		this.type = type;
+		this.setTypeStr(UserTypeEnum.getName(type));
 	}
 	/**
 	 * 获取：1 普通用户
@@ -119,6 +124,15 @@ public class CtUserEntity implements Serializable {
 	public Integer getType() {
 		return type;
 	}
+
+	public String getTypeStr() {
+		return typeStr;
+	}
+
+	public void setTypeStr(String typeStr) {
+		this.typeStr = typeStr;
+	}
+
 	/**
 	 * 设置：0：未激活
             1：激活
