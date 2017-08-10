@@ -64,8 +64,8 @@ public class CtUserServiceImpl implements CtUserService {
 		}
 		if(isVip&&userList.size()!=0)
 			ctUserDao.saveBatch(userList);
-		ctUserDao.updateUserTypeBatch(userUpdateList);
-
+		if(userUpdateList.size()!=0)
+			ctUserDao.updateUserTypeBatch(userUpdateList);
 	}
 
 	@Override
