@@ -210,7 +210,7 @@ var vm = new Vue({
             }).trigger("reloadGrid");
 		}
 	},
-    mounted:function () {
+    created:function () {
         this.initData();
     }
 });
