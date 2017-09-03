@@ -74,6 +74,7 @@ var vm = new Vue({
             $.get("../ctgrade/list", function(r){
                 vm.gradeData = r.gradeList;
             });
+            vm.ctClass.megagame = 0;
         },
 		query: function () {
 			vm.reload();
