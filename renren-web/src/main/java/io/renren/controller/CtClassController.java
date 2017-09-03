@@ -62,6 +62,8 @@ public class CtClassController {
 	@RequiresPermissions("ctclass:save")
 	public R save(CtClassEntity ctClass) throws Exception{
 		//文件处理
+		if(ctClass.getMegagame()==null)
+			ctClass.setMegagame(0);
 		ctClassService.save(ctClass);
 		return R.ok();
 	}
